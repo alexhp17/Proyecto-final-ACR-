@@ -46,11 +46,7 @@ public class Juego {
         this.username=username;
     }
     
-   public void jugar(){
-   
-       this.seleccionarPalabra();
-       
-   }
+
    
    private void seleccionarPalabra(){
        Random r = new Random(); 
@@ -62,6 +58,7 @@ public class Juego {
    }
    
    public void verificarLetra(String a){
+       
        if(this.palabraJuego.contains(a)){
            char aux[] = this.palabraJuego.toCharArray();
            //this.palabraAux="";
@@ -71,6 +68,17 @@ public class Juego {
               }
           }
           ///Verificar si ya esta completo para avanzar de nivel
+          int cont=0;
+           for (int i = 0; i < this.palabraAux.length; i++) {
+              if(palabraAux[i]=='-')
+               cont++;
+           }      
+          if(cont==0) {nivel++; seleccionarPalabra();}
+          
+          if(nivel==7)
+               System.out.println("Has ganado");
+          
+           System.out.println(String.valueOf(this.palabraAux));
        }else{
            //Lo del ahorcado
        }
@@ -87,13 +95,14 @@ public class Juego {
 //       }
 
    Juego j = new Juego("Cesar");
-   j.jugar();
+   j.seleccionarPalabra();
        System.out.println("");
    j.verificarLetra("a");
    j.verificarLetra("e");
    j.verificarLetra("i");
    j.verificarLetra("o");
    j.verificarLetra("u");
+       System.out.println(j.palabraJuego);
        System.out.println("");   
    }
     
