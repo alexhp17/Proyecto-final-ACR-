@@ -19,6 +19,8 @@ public class Juego {
     private String username;
     private String palabraJuego;
     private char[] palabraAux;
+    String palabra;
+    int errores;
     
     
     
@@ -46,15 +48,27 @@ public class Juego {
         this.username=username;
     }
     
-
+   public void reiniciar(){
+       errores = 0;
+       nivel =0;
+       seleccionarPalabra(); 
+   }
    
-   private void seleccionarPalabra(){
-       Random r = new Random(); 
+   public void seleccionarPalabra(){
+       if(nivel<7){
+           Random r = new Random(); 
        int pos = r.nextInt(this.palabras[this.nivel].length);
-       this.palabraJuego = this.palabras[this.nivel][pos];
+       this.palabraJuego = this.palabras[this.nivel][pos].toUpperCase();
        this.palabraAux = new char[this.palabraJuego.length()];
        for(int i=0;i<this.palabraJuego.length();i++)
            this.palabraAux[i]='-';
+       
+        this.palabra = String.valueOf(this.palabraAux);
+        System.out.println(palabraJuego);
+       }else{
+           System.out.println("Ganaste");
+       }
+       
    }
    
    public void verificarLetra(String a){
@@ -72,27 +86,40 @@ public class Juego {
            for (int i = 0; i < this.palabraAux.length; i++) {
               if(palabraAux[i]=='-')
                cont++;
-           }      
-          if(cont==0) {nivel++; seleccionarPalabra();}
+           }
+           
+          if(cont==0) {nivel++; errores=0; seleccionarPalabra();}
           
           if(nivel==7)
                System.out.println("Has ganado");
           
-           System.out.println(String.valueOf(this.palabraAux));
+            this.palabra = String.valueOf(this.palabraAux);
        }else{
-           //Lo del ahorcado
+           errores++;
        }
    }
+
+    public String getPalabra() {
+        return palabra;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public int getErrores() {
+        return errores;
+    }
+    
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+   
    
    
    public static void main(String args[]){
-//    String hola = "xoximilco"; 
-//    if(hola.contains("x")) System.out.println("Lo contiene");
-//    
-//       for (int i = 0; i <100; i++) {
-//            Random r = new Random(); 
-//           System.out.println(r.nextInt(12+1)); 
-//       }
+
 
    Juego j = new Juego("Cesar");
    j.seleccionarPalabra();
