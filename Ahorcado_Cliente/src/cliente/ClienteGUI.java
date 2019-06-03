@@ -14,6 +14,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -34,6 +36,9 @@ public class ClienteGUI extends javax.swing.JFrame {
     public ClienteGUI() {
         initComponents();
         this.setMinimumSize(new Dimension (1065,530));
+        this.jTextField4.setEnabled(false);
+        this.jButton37.setEnabled(false);
+        this.Iniciar.setEnabled(false);
     }
 
     /**
@@ -79,7 +84,7 @@ public class ClienteGUI extends javax.swing.JFrame {
         jButton23 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jTextField6 = new javax.swing.JTextField();
-        jButton29 = new javax.swing.JButton();
+        Iniciar = new javax.swing.JButton();
         jTextField4 = new javax.swing.JTextField();
         jButton37 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -90,6 +95,7 @@ public class ClienteGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -403,16 +409,16 @@ public class ClienteGUI extends javax.swing.JFrame {
         getContentPane().add(jTextField6);
         jTextField6.setBounds(60, 420, 190, 30);
 
-        jButton29.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton29.setText("Reiniciar");
-        jButton29.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton29.addActionListener(new java.awt.event.ActionListener() {
+        Iniciar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Iniciar.setText("Iniciar");
+        Iniciar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Iniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton29ActionPerformed(evt);
+                IniciarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton29);
-        jButton29.setBounds(440, 435, 120, 40);
+        getContentPane().add(Iniciar);
+        Iniciar.setBounds(440, 435, 120, 40);
 
         jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(jTextField4);
@@ -470,12 +476,17 @@ public class ClienteGUI extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(20, 135, 260, 280);
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(750, 170, 290, 230);
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cliente/fondoColores.jpg"))); // NOI18N
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(0, 0, 1070, 490);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -493,16 +504,29 @@ public class ClienteGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
 
-    private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
+    private void IniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarActionPerformed
         // TODO add your handling code here:
-        j.reiniciar();
+        if(this.Iniciar.getText().equals("Iniciar")){
+           j.reiniciar();
         this.jTextField6.setText(j.getPalabra());
         this.jLabel2.setText("Nivel "+(j.getNivel()+1));
         
          ImageIcon carro = new ImageIcon(getClass().getResource("0_Fondo.jpg"));
-          ImageIcon icon = new ImageIcon(carro.getImage().getScaledInstance(this.jLabel1.getWidth(), this.jLabel1.getHeight(), Image.SCALE_DEFAULT));
-            this.jLabel1.setIcon(icon);
-    }//GEN-LAST:event_jButton29ActionPerformed
+         ImageIcon icon = new ImageIcon(carro.getImage().getScaledInstance(this.jLabel1.getWidth(), this.jLabel1.getHeight(), Image.SCALE_DEFAULT));
+         this.jLabel1.setIcon(icon); 
+         this.Iniciar.setText("Reiniciar");
+        }else{
+            j.reiniciar();
+        this.jTextField6.setText(j.getPalabra());
+        this.jLabel2.setText("Nivel "+(j.getNivel()+1));
+        
+         ImageIcon carro = new ImageIcon(getClass().getResource("0_Fondo.jpg"));
+         ImageIcon icon = new ImageIcon(carro.getImage().getScaledInstance(this.jLabel1.getWidth(), this.jLabel1.getHeight(), Image.SCALE_DEFAULT));
+         this.jLabel1.setIcon(icon); 
+         this.Iniciar.setText("Reiniciar");
+        }
+        
+    }//GEN-LAST:event_IniciarActionPerformed
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // TODO add your handling code here:
@@ -662,7 +686,9 @@ public class ClienteGUI extends javax.swing.JFrame {
                //  actualizarLista(servidor.obtenerJugadoresActivos());
                     this.jTextField4.setEnabled(true);
                     this.jButton37.setEnabled(true);
+                    this.Iniciar.setEnabled(true);
                     this.referencia = servidor.obtenerJugadoresActivos().size();
+                    System.out.println("Ref "+this.referencia);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             } catch (NotBoundException ex) {
@@ -678,10 +704,11 @@ public class ClienteGUI extends javax.swing.JFrame {
 //            try {
 //                servidor.obtenerClientesActivos().remove(0);
 //                actualizarLista(servidor.obtenerClientesActivos());
-//                this.jTextFieldUsuario.setEnabled(true);
-//                this.jTextFieldIP.setEnabled(true);
+                this.jTextFieldUsuario.setEnabled(true);
+                this.jTextFieldIP.setEnabled(true);
                 this.jTextField4.setEnabled(false);
                 this.jButton37.setEnabled(false);
+                this.Iniciar.setEnabled(true);
                 this.jButton1.setText("Conectar");
 //            } 
 //            catch (RemoteException ex) {
@@ -734,15 +761,27 @@ public class ClienteGUI extends javax.swing.JFrame {
                      j.reiniciar();
                         this.jTextField6.setText(j.getPalabra());
                             this.jLabel2.setText("Nivel "+(j.getNivel()+1));
-        
                                 pic="0_Fondo.jpg"; 
+             {
+                 try {
+                     this.enviarMensaje(cliente.getUsername()+" dice: " +"He perdido");
+                 } catch (RemoteException ex) {
+                     ex.printStackTrace();
+                 }
+             }
             break;
          }
          }else{
-             this.jLabel2.setText("Ganaste");
-             this.jTextField1.setText(j.getPuntuacion()+"");
-             this.jTextField6.setText("GANASTE");
-              pic="copa.jpg";
+             
+             try {
+                 this.jLabel2.setText("Ganaste");
+                 this.jTextField1.setText(j.getPuntuacion()+"");
+                 this.jTextField6.setText("GANASTE");
+                 pic="copa.jpg";
+                 this.enviarMensaje(cliente.getUsername()+" dice: " +"SOY EL GANADOR");
+             } catch (RemoteException ex) {
+                ex.printStackTrace();
+             }
          }
          
             ImageIcon carro = new ImageIcon(getClass().getResource(pic));
@@ -786,6 +825,7 @@ public class ClienteGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Iniciar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -807,7 +847,6 @@ public class ClienteGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton28;
-    private javax.swing.JButton jButton29;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton37;
     private javax.swing.JButton jButton4;
@@ -824,6 +863,7 @@ public class ClienteGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
@@ -842,16 +882,69 @@ public class ClienteGUI extends javax.swing.JFrame {
             if(!this.jTextField4.getText().isEmpty()){
                 try {
                     String aux = cliente.getUsername()+ " dice: " + this.jTextField4.getText();
-                    for(int i=0;i<this.servidor.obtenerJugadoresActivos().size();i++){
-                         InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
-                         clien.enviarMsg(aux);     
-                    }
+//                    for(int i=0;i<this.servidor.obtenerJugadoresActivos().size();i++){
+//                         InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
+//                         clien.enviarMsg(aux);     
+//                    }
+                   try{
+                       if(this.referencia%2==0){
+                          for(int i=referencia-2;i<this.referencia;i++){
+                             InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
+                             clien.enviarMsg(aux);  
+                          }  
+                      }else{
+                          for(int i=referencia-1;i<this.referencia+1;i++){
+                             InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
+                             clien.enviarMsg(aux);  
+                          }
+                      }
+                   }catch(Exception e){
+                       JOptionPane.showMessageDialog(null,"Esperando rival...");
+                   }
+                          
                    this.jTextField4.setText("");
                 } catch (RemoteException ex) {
                    ex.printStackTrace();
                 }
            }   
         }   
+    }
+    
+      private void enviarMensaje(String aux){
+         if(this.jButton1.getText().equals("Desconectar")){
+                   try{
+                       if(this.referencia%2==0){
+                          for(int i=referencia-2;i<this.referencia;i++){
+                             InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
+                             clien.enviarMsg(aux);  
+                          }  
+                      }else{
+                          for(int i=referencia-1;i<this.referencia+1;i++){
+                             InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
+                             clien.enviarMsg(aux);  
+                          }
+                      }
+                   }catch(Exception e){
+                       JOptionPane.showMessageDialog(null,"Esperando rival...");
+                   } 
+        }   
+    }
+      
+       public void run() {
+        while(true) {
+            try {
+                Thread.sleep(1000);
+                if(this.jButton1.getText().equals("Desconectar")) {
+                    this.servidor.obtenerJugadoresActivos();
+                }   
+            }
+            catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
         
 }
