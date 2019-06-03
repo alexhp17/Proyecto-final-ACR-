@@ -15,8 +15,9 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ClienteAhorcado extends UnicastRemoteObject implements InterfaceCliente{
     
-     private String nombre;
-   // private ClienteGUI  gui;
+    
+    private String nombre;
+    private ClienteGUI  gui;
     
     public ClienteAhorcado(String nombre)throws RemoteException{
         super();
@@ -25,7 +26,7 @@ public class ClienteAhorcado extends UnicastRemoteObject implements InterfaceCli
 
     @Override
     public void enviarMsg(String msg) throws RemoteException {
-         //gui.actualizarArea(msg);
+         gui.actualizarArea(msg);
     }
 
     @Override
@@ -33,8 +34,8 @@ public class ClienteAhorcado extends UnicastRemoteObject implements InterfaceCli
       return this.nombre;
     }
     
-//      public void setGUI(ClienteGUI cg){
-//        this.gui = cg;
-//       }
+      public void setGUI(ClienteGUI cg){
+        this.gui = cg;
+       }
     
 }

@@ -8,6 +8,8 @@ package servidor;
 import interfaces.InterfaceCliente;
 import interfaces.InterfaceServidor;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 
@@ -43,7 +45,14 @@ public class ServidorAhorcado extends UnicastRemoteObject implements InterfaceSe
         return listaClientes;
     }
     
-    public static void main(String args[]){
-        System.out.println("Hola");
+    public static void main(String args[]){   
+        try{
+            ServidorAhorcado serv= new ServidorAhorcado();
+            Registry reg = LocateRegistry.createRegistry(1099);
+            reg.rebind("servidor", serv);
+            System.out.println("Servidor Ahorcado Activo.....");
+        }catch(RemoteException e){
+         e.printStackTrace();
+        }
     }
 }

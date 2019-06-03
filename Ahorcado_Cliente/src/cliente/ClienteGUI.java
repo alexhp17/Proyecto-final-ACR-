@@ -6,8 +6,14 @@
 package cliente;
 
 import Juego.Juego;
+import interfaces.InterfaceCliente;
+import interfaces.InterfaceServidor;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -20,6 +26,11 @@ public class ClienteGUI extends javax.swing.JFrame {
     /**
      * Creates new form ClienteGUI
      */
+     
+    private InterfaceServidor servidor;
+    private ClienteAhorcado cliente;
+    private int referencia;
+    
     public ClienteGUI() {
         initComponents();
         this.setMinimumSize(new Dimension (1065,530));
@@ -40,7 +51,6 @@ public class ClienteGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jButton27 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -73,12 +83,13 @@ public class ClienteGUI extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jButton37 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldIP = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        jTextFieldUsuario = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -111,16 +122,6 @@ public class ClienteGUI extends javax.swing.JFrame {
         jLabel5.setText("Chatea con tu rival");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(750, 134, 270, 30);
-
-        jTextField3.setEditable(false);
-        jTextField3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField3);
-        jTextField3.setBounds(750, 165, 270, 250);
 
         jButton27.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton27.setText("Q");
@@ -420,22 +421,32 @@ public class ClienteGUI extends javax.swing.JFrame {
         jButton37.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton37.setText("Enviar");
         jButton37.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton37ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton37);
         jButton37.setBounds(946, 425, 80, 30);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton1.setText("Conectar");
         jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1);
         jButton1.setBounds(460, 63, 100, 30);
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                jTextFieldIPActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2);
-        jTextField2.setBounds(300, 63, 140, 30);
+        getContentPane().add(jTextFieldIP);
+        jTextFieldIP.setBounds(300, 63, 140, 30);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setText("IP:");
@@ -443,13 +454,13 @@ public class ClienteGUI extends javax.swing.JFrame {
         getContentPane().add(jLabel7);
         jLabel7.setBounds(270, 70, 30, 20);
 
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                jTextFieldUsuarioActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField7);
-        jTextField7.setBounds(110, 63, 130, 30);
+        getContentPane().add(jTextFieldUsuario);
+        jTextFieldUsuario.setBounds(110, 63, 130, 30);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setText("Nombre:");
@@ -459,29 +470,28 @@ public class ClienteGUI extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(20, 135, 260, 280);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cliente/fondoColores.jpg"))); // NOI18N
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(0, 0, 1070, 500);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(750, 170, 290, 230);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         // TODO add your handling code here:
          analizarCaracter("C");
     }//GEN-LAST:event_jButton23ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextFieldIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jTextFieldIPActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
 
     private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
         // TODO add your handling code here:
@@ -629,6 +639,62 @@ public class ClienteGUI extends javax.swing.JFrame {
         analizarCaracter("M");
     }//GEN-LAST:event_jButton26ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+          // TODO add your handling code here:
+        ///Boton conectar
+        if(this.jButton1.getText().equals("Conectar")){
+            if(this.jTextFieldUsuario.getText().isEmpty()){
+             JOptionPane.showMessageDialog(null, "Debes poner un nombre");
+             return;
+            }
+            if(this.jTextFieldIP.getText().isEmpty()){
+             JOptionPane.showMessageDialog(null, "Debes poner una Ip");
+             return;
+            }
+            
+            try {
+                this.cliente = new ClienteAhorcado(this.jTextFieldUsuario.getText());
+                cliente.setGUI(this);
+                Registry reg = LocateRegistry.getRegistry(this.jTextFieldIP.getText(), 1099);
+                this.servidor = (InterfaceServidor) reg.lookup("servidor");
+                 this.servidor.registrar(cliente);
+               //  actualizarLista(servidor.obtenerJugadoresActivos());
+                    this.jTextField4.setEnabled(true);
+                    this.jButton37.setEnabled(true);
+                    this.referencia = servidor.obtenerJugadoresActivos().size();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            } catch (NotBoundException ex) {
+                ex.printStackTrace();
+            } 
+                   
+            this.jTextFieldUsuario.setEnabled(false);
+            this.jTextFieldIP.setEnabled(false);
+            this.jButton1.setText("Desconectar");
+            //Faltar borrar clientes de la lista cuandio se desconecte!!!
+            //Actualizar cosntantemente la lista de clientes
+        }else{
+//            try {
+//                servidor.obtenerClientesActivos().remove(0);
+//                actualizarLista(servidor.obtenerClientesActivos());
+//                this.jTextFieldUsuario.setEnabled(true);
+//                this.jTextFieldIP.setEnabled(true);
+                this.jTextField4.setEnabled(false);
+                this.jButton37.setEnabled(false);
+                this.jButton1.setText("Conectar");
+//            } 
+//            catch (RemoteException ex) {
+//                ex.printStackTrace();
+//            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton37ActionPerformed
+        // TODO add your handling code here:
+        enviarMensaje();
+    }//GEN-LAST:event_jButton37ActionPerformed
+
     
     private void analizarCaracter(String aux){
        
@@ -758,12 +824,34 @@ public class ClienteGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextFieldIP;
+    private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
+
+    void actualizarArea(String msg) {
+     this.jTextArea1.setText(this.jTextArea1.getText()+"\n"+msg);
+    }
+
+     private void enviarMensaje(){
+         if(this.jButton1.getText().equals("Desconectar")){
+            if(!this.jTextField4.getText().isEmpty()){
+                try {
+                    String aux = cliente.getUsername()+ " dice: " + this.jTextField4.getText();
+                    for(int i=0;i<this.servidor.obtenerJugadoresActivos().size();i++){
+                         InterfaceCliente clien = (InterfaceCliente)this.servidor.obtenerJugadoresActivos().get(i);
+                         clien.enviarMsg(aux);     
+                    }
+                   this.jTextField4.setText("");
+                } catch (RemoteException ex) {
+                   ex.printStackTrace();
+                }
+           }   
+        }   
+    }
+        
 }

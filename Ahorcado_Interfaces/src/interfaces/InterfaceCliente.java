@@ -5,13 +5,14 @@
  */
 package interfaces;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  *
  * @author CESAR IVAN MTZ
  */
-public interface InterfaceCliente {
+public interface InterfaceCliente extends Remote{
      public void enviarMsg(String msg)throws RemoteException;
      public String getUsername()throws RemoteException;
 }

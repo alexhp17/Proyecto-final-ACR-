@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Vector;
 
@@ -12,7 +13,7 @@ import java.util.Vector;
  *
  * @author CESAR IVAN MTZ
  */
-public interface InterfaceServidor {
+public interface InterfaceServidor extends Remote{
     public void registrar(InterfaceCliente cliente)throws RemoteException;
     public void publicar(String msg)throws RemoteException;
     public Vector obtenerJugadoresActivos()throws RemoteException;;
