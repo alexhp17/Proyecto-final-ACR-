@@ -14,7 +14,6 @@ import java.util.Random;
 public class Juego {
     
     private int nivel;
-    private int puntuacion;
     private double time;
     private String username;
     private String palabraJuego;
@@ -44,7 +43,6 @@ public class Juego {
     public Juego(String username){
         nivel = 0;
         this.time=0;
-        this.puntuacion=0;
         this.username=username;
     }
     
@@ -88,6 +86,7 @@ public class Juego {
                cont++;
            }
            
+          if(nivel<7)
           if(cont==0) {nivel++; errores=0; seleccionarPalabra();}
           
           if(nivel==7)
@@ -97,6 +96,25 @@ public class Juego {
        }else{
            errores++;
        }
+   }
+   
+   public int getPuntuacion(){ 
+       if(nivel==1)
+            return 10;
+       else if(nivel==2)
+            return 100;
+       else if(nivel==3)
+            return 1000;
+       else if(nivel==4)
+            return 10000;
+       else if(nivel==5)
+            return 100000;
+       else if(nivel==6)
+            return 100000;
+       else if(nivel==7)
+            return 1000000;
+       else
+           return 0;
    }
 
     public String getPalabra() {
